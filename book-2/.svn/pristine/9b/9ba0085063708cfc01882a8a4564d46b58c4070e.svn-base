@@ -1,0 +1,48 @@
+package org.wlxy.book.dao.impl;
+
+import java.util.Collection;
+
+import org.wlxy.book.dao.SaleRecordDao;
+import org.wlxy.book.vo.SaleRecord;
+
+
+/**
+ * @ClassName SaleRecordDaoImpl
+ * @Description TODO(这里用一句话描述这个类的作用)
+ * @author huangtao
+ * @Date 2017年7月10日 上午10:44:21
+ * @version 1.0.0
+ */
+public class SaleRecordDaoImpl implements SaleRecordDao {
+
+    /* (非 Javadoc)
+     * Description:
+     * @see org.wlxy.book.dao.SaleRecordDao#findByDate(java.lang.String, java.lang.String)
+     */
+    @Override
+    public Collection<SaleRecord> findByDate(String begin, String end) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (非 Javadoc)
+     * Description:
+     * @see org.wlxy.book.dao.SaleRecordDao#findByID(java.lang.String)
+     */
+    @Override
+    public SaleRecord findByID(String id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (非 Javadoc)
+     * Description:
+     * @see org.wlxy.book.dao.SaleRecordDao#save(org.wlxy.book.vo.SaleRecord)
+     */
+    @Override
+    public String save(SaleRecord saleRecord) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+}

@@ -1,0 +1,171 @@
+package org.wlxy.book.ui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.KeyStroke;
+
+import org.wlxy.book.service.SaleRecordService;
+import org.wlxy.book.ui.SalePanel;
+import org.wlxy.book.dao.BookSaleRecordDao;
+import org.wlxy.book.dao.SaleRecordDao;
+import org.wlxy.book.dao.impl.BookSaleRecordDaoImpl;
+import org.wlxy.book.dao.impl.SaleRecordDaoImpl;
+import org.wlxy.book.service.impl.SaleRecordServiceImpl;
+import org.wlxy.book.dao.BookDao;
+import org.wlxy.book.dao.BookInRecordDao;
+import org.wlxy.book.dao.BookTypeDao;
+import org.wlxy.book.dao.InRecordDao;
+import org.wlxy.book.dao.PublisherDao;
+import org.wlxy.book.dao.impl.BookDaoImpl;
+import org.wlxy.book.dao.impl.BookInRecordDaoImpl;
+import org.wlxy.book.dao.impl.BookTypeDaoImpl;
+import org.wlxy.book.dao.impl.InRecordDaoImpl;
+import org.wlxy.book.dao.impl.PublisherDaoImpl;
+import org.wlxy.book.service.BookService;
+import org.wlxy.book.service.BookTypeService;
+import org.wlxy.book.service.InRecordService;
+import org.wlxy.book.service.PublisherService;
+import org.wlxy.book.service.impl.BookServiceImpl;
+import org.wlxy.book.service.impl.BookTypeServiceImpl;
+import org.wlxy.book.service.impl.InRecordServiceImpl;
+import org.wlxy.book.service.impl.PublisherServiceImpl;
+
+/**
+ * 主界面的JFrame
+ * 
+ * @author huangato
+ * @version  1.0
+ *  */
+public class MainFrame extends JFrame{
+		
+	PublisherPanel publisherPanel;
+	BookTypePanel bookTypePanel ;
+	BookJPanel  bookJPanel;
+	RepertoryPanel repertoryPanel ;
+	SalePanel salePanel;
+	
+	//业务接口	
+	PublisherService publisherService;
+	BookTypeService  bookTypeService ;
+	BookService bookService ;
+	InRecordService inRecordService ;
+    SaleRecordService saleRecordService;
+
+	//公用Panel类
+    CommonJPanel currentJPanel; 
+
+    private Action sale = new AbstractAction("销售管理", new ImageIcon("images/sale.gif")) {
+        public void actionPerformed(ActionEvent e) {
+            changePanel(salePanel);
+        }
+    };
+    
+	private Action repertory = new AbstractAction("库存管理", new ImageIcon("images/repertory.gif")) {
+	        public void actionPerformed(ActionEvent e) {
+	            //切换面板
+	            changePanel(repertoryPanel);
+	        }
+	    };
+    private Action book = new AbstractAction("书本管理", new ImageIcon("images/book.gif")) {
+        public void actionPerformed(ActionEvent e) {
+            //切换面板
+            changePanel(bookJPanel);
+        }
+    };
+	private Action bookType = new AbstractAction("种类管理", new ImageIcon("images/type.gif")) {
+        public void actionPerformed(ActionEvent e) {
+            //切换面板
+            changePanel(bookTypePanel);
+        }
+    };
+	
+	private Action publisher = new AbstractAction("出版社管理", new ImageIcon("images/publisher.gif")) {
+		public void actionPerformed(ActionEvent e) {
+			//切换面板
+		    changePanel(publisherPanel);
+		}
+	};
+
+    
+	public MainFrame() {
+	    //引入数据层对象
+		PublisherDao publisherDao = new PublisherDaoImpl();
+		BookTypeDao bookTypeDao = new BookTypeDaoImpl(); 
+		BookDao  bookDao = new BookDaoImpl();
+		InRecordDao  inRecordDao = new InRecordDaoImpl();
+		BookInRecordDao bookInRecordDao = new BookInRecordDaoImpl();
+		SaleRecordDao saleRecordDao = new SaleRecordDaoImpl();
+	    BookSaleRecordDao bookSaleRecordDao = new BookSaleRecordDaoImpl();
+		//业务层对象实例化
+		this.publisherService = new PublisherServiceImpl(publisherDao);	
+		this.bookTypeService = new BookTypeServiceImpl(bookTypeDao);
+		this.bookService = new BookServiceImpl(bookDao,publisherDao,bookTypeDao);
+		this.inRecordService = new InRecordServiceImpl( inRecordDao,  bookDao,  bookInRecordDao);
+	    this.saleRecordService = new SaleRecordServiceImpl(saleRecordDao, 
+	                bookSaleRecordDao, bookDao);
+		//主框架的菜单定义
+		JMenuBar menuBar = new JMenuBar();
+		JMenu menu = new JMenu("系统");
+		menuBar.add(menu);	
+	
+		//菜单添加快捷访问方式
+	    menu.add(sale).setAccelerator(KeyStroke.getKeyStroke('S', InputEvent.CTRL_MASK));
+	    menu.add(repertory).setAccelerator(KeyStroke.getKeyStroke('R', InputEvent.CTRL_MASK));      
+		menu.add(book).setAccelerator(KeyStroke.getKeyStroke('B', InputEvent.CTRL_MASK));	
+	    menu.add(bookType).setAccelerator(KeyStroke.getKeyStroke('T', InputEvent.CTRL_MASK));  
+	    menu.add(publisher).setAccelerator(KeyStroke.getKeyStroke('P', InputEvent.CTRL_MASK)); 
+
+
+		//让界面作为第一显示界面
+		this.publisherPanel = new PublisherPanel(this.publisherService);
+		this.add(publisherPanel);
+		this.currentJPanel = publisherPanel;
+		this.publisherPanel.initData();	
+		
+	    this.bookJPanel = new BookJPanel(bookService,bookTypeService,publisherService);
+	    this.add(bookJPanel);
+	    
+	    this.bookTypePanel = new BookTypePanel(this.bookTypeService);
+        this.add(bookTypePanel);
+        
+        this.repertoryPanel = new RepertoryPanel(inRecordService,bookService);
+        this.add(repertoryPanel);
+		
+        this.salePanel = new SalePanel(this.bookService, this.saleRecordService);
+        this.add(salePanel);
+        
+		this.setJMenuBar(menuBar);
+		this.setTitle("图书进存销管理系统");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.setVisible(true);
+	}	
+	 
+	   //切换各个界面
+	    private void changePanel(CommonJPanel commonJPanel) {
+		//移除当前显示的JPanel
+		this.remove(currentJPanel);
+		//添加需要显示的JPanel
+		this.add(commonJPanel);
+		//设置当前的JPanel
+		this.currentJPanel = commonJPanel;
+		this.repaint();
+		this.setVisible(true);
+		//重新读取数据
+		commonJPanel.setViewDatas();
+		//刷新列表
+		commonJPanel.clear();
+	}
+	
+	//测试入口
+	public static void main(String[] args) {
+		new MainFrame();
+	}
+}

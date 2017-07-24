@@ -1,0 +1,59 @@
+package org.wlxy.book.service.impl;
+
+import java.util.Collection;
+
+import org.wlxy.book.dao.BookDao;
+import org.wlxy.book.dao.BookSaleRecordDao;
+import org.wlxy.book.dao.SaleRecordDao;
+import org.wlxy.book.service.SaleRecordService;
+import org.wlxy.book.vo.SaleRecord;
+
+/**
+ * @ClassName SaleRecordServiceImpl
+ * @Description TODO(销售记录业务层实现类)
+ * @author huangato
+ * @Date 2017年7月10日 下午3:45:51
+ * @version 1.0.0
+ */
+public class SaleRecordServiceImpl implements SaleRecordService {
+  
+    private BookDao bookDao ;
+    private SaleRecordDao saleRecordDao ;
+    private BookSaleRecordDao bookSaleRecordDao;
+    
+    //构造方法
+    public SaleRecordServiceImpl(BookDao  bookDao,SaleRecordDao saleRecordDao,BookSaleRecordDao bookSaleReDao){
+        this.bookDao = bookDao;
+        this.saleRecordDao = saleRecordDao ;
+        this.bookSaleRecordDao = bookSaleRecordDao ;
+    }
+   
+    //添加销售记录
+    @Override
+    public SaleRecord add(SaleRecord saleRecord) {
+        return null;
+    }
+    
+    //修改销售记录
+    @Override
+    public SaleRecord update(SaleRecord saleRecord) {
+        String id =  saleRecordDao.save(saleRecord);
+       return  saleRecordDao.findByID(id);
+    }
+    
+    //查询所有的销售记录
+    @Override
+    public Collection<SaleRecord> queryAll() {
+        
+        return null;
+    }
+   
+    //根据ID查询销售记录
+    @Override
+    public SaleRecord queryByID(String id) {
+        return  saleRecordDao.findByID(id);
+    }
+
+ 
+
+}

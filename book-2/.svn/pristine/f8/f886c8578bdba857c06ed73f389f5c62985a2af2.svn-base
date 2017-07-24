@@ -1,0 +1,23 @@
+package org.wlxy.book.service;
+
+import java.util.Collection;
+
+import org.wlxy.book.vo.InRecord;
+
+/**
+ * @ClassName InRecordService
+ * @Description TODO(入库记录Service层接口)
+ * @author huangtao
+ * @Date 2017年7月10日 下午2:17:56
+ * @version 1.0.0
+ */
+public interface InRecordService {
+    //入库记录信息添加 
+    InRecord add (InRecord  inRecord);   
+    
+    //查询全量入库记录
+    Collection<InRecord> queryAll();   
+    //根据ID查询入库记录
+    InRecord queryByID(String id );
+   
+}

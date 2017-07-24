@@ -1,0 +1,94 @@
+package org.wlxy.book.service.impl;
+
+import java.util.Collection;
+
+import org.wlxy.book.dao.BookDao;
+import org.wlxy.book.dao.BookTypeDao;
+import org.wlxy.book.dao.PublisherDao;
+import org.wlxy.book.service.BookService;
+import org.wlxy.book.vo.Book;
+
+
+/**
+ * @author huangato
+ * @version 1.0.0
+ * @ClassName BookServiceImpl
+ * @Description TODO(书本业务层实现类)
+ * @Date 2017年7月10日 下午2:51:25
+ */
+public class BookServiceImpl implements BookService {
+
+    private BookDao bookDao = null;
+    private PublisherDao publisherDao = null;
+    private BookTypeDao bookTypeDao = null;
+
+
+    //构造方法
+    public BookServiceImpl(BookDao bookDao, PublisherDao publisherDao, BookTypeDao bookTypeDao) {
+        this.bookDao = bookDao;
+        this.publisherDao = publisherDao;
+        this.bookTypeDao = bookTypeDao;
+    }
+
+    //书本的添加
+    @Override
+    public Book add(Book book) {
+
+        String bookID = bookDao.add(book);
+        Book addbook = bookDao.findByID(bookID);
+        return addbook;
+    }
+
+    //书本信息的修改
+    @Override
+    public Book update(Book book) {
+        String bookId = bookDao.update(book);
+        Book addbook = bookDao.findByID(bookId);
+        return addbook;
+    }
+
+
+    //查询所有的书本信息
+    @Override
+    public Collection<Book> queryAll() {
+
+        Collection<Book> bookList = bookDao.findAll();
+
+        return setAssociate(bookList);
+    }
+
+
+    //根据ID查询书本
+    @Override
+    public Book queryByID(String id) {
+        Book book = bookDao.findByID(id);
+        return book;
+    }
+
+
+    //根据名称查询书本
+    @Override
+    public Collection<Book> queryByName(String name) {
+
+        Collection<Book> bookList = bookDao.findByName(name);
+
+        return setAssociate(bookList);
+    }
+
+    //设置书本和出版社、书本类型的对应关系
+    public Collection<Book> setAssociate(Collection<Book> result) {
+        try {
+            //遍历集合数据，将每个书本对象中引用的对象进行实例化
+            for (Book book : result) {
+                book.setBookType(bookTypeDao.findByID(book.getTYPE_ID_FK()));
+                book.setPublisher(publisherDao.findByID(book.getPUB_ID_FK()));
+            }
+        } catch (Exception e) {
+            System.out.println("数据库无数据" + e.getMessage());
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+}

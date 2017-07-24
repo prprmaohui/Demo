@@ -1,0 +1,121 @@
+package org.wlxy.book.ui;
+
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import org.wlxy.book.dao.UserDao;
+import org.wlxy.book.dao.impl.UserDaoImpl;
+import org.wlxy.book.service.impl.UserServiceImpl;
+import org.wlxy.book.ui.LoginFrame;
+import org.wlxy.book.service.UserService;
+
+/**
+ * @ClassName LoginFrame
+ * @Description TODO( 登录的JFrame )
+ * @author huangato
+ * @Date 2017年7月11日 上午10:09:54
+ * @version 1.0.0
+ */
+public class LoginFrame extends JFrame {
+
+    // 定义账号、密码的标签
+    private JLabel nameLabel = new JLabel("用户名");
+    private JLabel passwordLabel = new JLabel("密     码");
+
+    // 定义用户名、密码的文本框
+    private JTextField nameText = new JTextField();
+    private JPasswordField passwordText = new JPasswordField();
+
+    // 定义登录按钮
+    private JButton botton = new JButton("登录");
+
+    // 定义布局管理器
+    private Box up = Box.createHorizontalBox();
+    private Box center = Box.createHorizontalBox();
+    private Box upCenter = Box.createVerticalBox();
+    private Box down = Box.createHorizontalBox();
+
+    UserService userService;
+
+    // 构造方法
+    public LoginFrame(UserService userService) {
+        this.userService = userService;
+
+        // 设置BOX布局
+        up.add(Box.createHorizontalStrut(50));
+        up.add(nameLabel);
+        up.add(Box.createHorizontalStrut(10));
+        up.add(nameText);
+        up.add(Box.createHorizontalStrut(100));
+
+        center.add(Box.createHorizontalStrut(50));
+        center.add(passwordLabel);
+        center.add(Box.createHorizontalStrut(10));
+        center.add(passwordText);
+        center.add(Box.createHorizontalStrut(100));
+
+        upCenter.add(Box.createVerticalStrut(20));
+        upCenter.add(up);
+        upCenter.add(Box.createVerticalStrut(20));
+        upCenter.add(center);
+        upCenter.add(Box.createVerticalStrut(20));
+
+        down.add(Box.createHorizontalStrut(270));
+        down.add(botton, BorderLayout.EAST);
+        down.add(Box.createHorizontalStrut(30));
+        down.add(Box.createVerticalStrut(50));
+
+        this.add(upCenter, BorderLayout.CENTER);
+        this.add(down, BorderLayout.SOUTH);
+        // 设置坐标及登录界面的宽度和高度
+        this.setBounds(300, 300, 350, 200);
+        this.pack();
+        this.setVisible(true);
+
+        initLisenners();
+    }
+
+    // 定义监听器
+    public void initLisenners() {
+        //在button上定义事件 
+        this.botton.addActionListener(new ActionListener() {
+            //重写父类方法
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                login();
+            }
+        });
+    }
+
+    // 登录逻辑
+    public void login() {
+        String userName = this.nameText.getText();
+        char[] passWords = this.passwordText.getPassword();//getPassword返回值需要数组接收
+        StringBuffer passStr = new StringBuffer();
+        
+        for(char c:passWords){
+            passStr = passStr.append(c);
+        }
+        //调用业务层接口进行登录验证
+        this.userService.login(userName, passStr.toString());
+        //登录成功后，弹出登录后的窗体--mainFrame主框架
+         new MainFrame();
+        //完成登录验证后将登录界面设置为不可见
+        this.setVisible(false);
+    }
+    
+    //测试loginFrame
+    public static void main(String[] args) {
+        UserDao userDao = new UserDaoImpl();
+        UserService userService = new UserServiceImpl(userDao);
+        LoginFrame loginFrame = new LoginFrame(userService);
+    }
+}

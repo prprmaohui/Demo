@@ -1,0 +1,26 @@
+package org.wlxy.book.vo;
+
+
+/**
+ * @ClassName SaleRecord
+ * @Description TODO(售记录类)
+ * @author huangato
+ * @Date 2017年7月5日 下午2:57:07
+ * @version 1.0.0
+ */
+public class SaleRecord extends ValueObject {
+    
+    
+    private String RECORD_DATE; //交易日期
+
+    public String getRECORD_DATE() {
+        return RECORD_DATE;
+    }
+
+    
+   
+    public void setRECORD_DATE(String rECORD_DATE) {
+        RECORD_DATE = rECORD_DATE;
+    }
+
+}

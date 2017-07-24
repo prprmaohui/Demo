@@ -1,0 +1,26 @@
+package org.wlxy.book.service;
+
+import java.util.Collection;
+
+import org.wlxy.book.vo.SaleRecord;
+
+/**
+ * @ClassName SaleRecordService
+ * @Description TODO(销售记录Service)
+ * @author huangtao
+ * @Date 2017年7月10日 下午2:17:18
+ * @version 1.0.0
+ */
+public interface SaleRecordService {
+    
+    //销售记录信息添加 
+    SaleRecord add (SaleRecord  saleRecord);   
+    //销售记录信息修改
+    SaleRecord update(SaleRecord  saleRecord);   
+    //查询全量销售记录
+    Collection<SaleRecord> queryAll();   
+    //根据ID查询销售记录
+    SaleRecord queryByID(String id );
+   
+    
+}

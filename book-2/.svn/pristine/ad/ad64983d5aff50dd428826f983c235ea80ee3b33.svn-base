@@ -1,0 +1,50 @@
+package org.wlxy.book.service.impl;
+
+import java.util.Collection;
+
+import org.wlxy.book.dao.BookDao;
+import org.wlxy.book.dao.BookInRecordDao;
+import org.wlxy.book.dao.InRecordDao;
+import org.wlxy.book.service.InRecordService;
+import org.wlxy.book.vo.InRecord;
+
+/**
+ * @ClassName InRecordServiceImpl
+ * @Description TODO(书本入库业务层实现)
+ * @author huangato
+ * @Date 2017年7月10日 下午3:43:34
+ * @version 1.0.0
+ */
+public class InRecordServiceImpl implements InRecordService {
+
+    private InRecordDao inRecordDao;
+    private BookDao bookDao;
+    private BookInRecordDao bookInRecordDao;
+
+    // 构造方法
+    public InRecordServiceImpl(InRecordDao inRecordDao, BookDao bookDao, BookInRecordDao bookInRecordDao) {
+        this.inRecordDao = inRecordDao ;
+        this.bookDao = bookDao;
+        this.bookInRecordDao = bookInRecordDao ;
+    }
+
+    //添加入库记录
+    @Override
+    public InRecord add(InRecord inRecord) {
+        String id = inRecordDao.save(inRecord);
+        return inRecordDao.findByID(id);  
+    }
+
+    //根据ID查询入库记录
+    @Override
+    public InRecord queryByID(String id) {
+        return null;
+    }
+
+    //查询所有的如今记录
+    @Override
+    public Collection<InRecord> queryAll() {
+        return null;
+    }
+
+}

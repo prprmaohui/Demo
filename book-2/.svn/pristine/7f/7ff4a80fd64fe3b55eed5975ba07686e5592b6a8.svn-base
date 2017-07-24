@@ -1,0 +1,17 @@
+package com.six;
+
+import com.six.dao.UserDao;
+import com.six.dao.impl.UserDaoImpl;
+import com.six.service.UserService;
+import com.six.service.impl.UserServiceImpl;
+import com.six.ui.LoginFrame;
+
+/**
+ * Created by AngusWG on 2017/7/5.
+ */
+public class main {
+
+    public static void main(String[] args) {
+        LoginFrame.dologin();
+    }
+}
